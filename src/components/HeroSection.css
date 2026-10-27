@@ -1,0 +1,152 @@
+.hero-section {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: 100%;
+  min-height: 430px;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  overflow: hidden;
+  border-radius: 0.9rem;
+  background: #e9ece3;
+}
+
+.hero-section::before {
+  position: absolute;
+  top: -7rem;
+  right: 24%;
+  width: 20rem;
+  height: 20rem;
+  border: 1px solid rgba(23, 25, 22, 0.07);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.hero-copy,
+.hero-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1.2rem;
+  color: #5e625a;
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.hero-eyebrow span {
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: #8bbf24;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 4.1vw, 4.3rem);
+  font-weight: 850;
+  letter-spacing: -0.075em;
+  line-height: 0.91;
+}
+
+.hero-description {
+  max-width: 390px;
+  margin: 1.4rem 0 1.7rem;
+  color: #62665e;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 0.95rem 1.2rem;
+  border-radius: 0.5rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 750;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.hero-cta:hover {
+  background: #34392e;
+  transform: translateY(-2px);
+}
+
+.hero-cta span {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.hero-visual {
+  min-width: 0;
+}
+
+.hero-image-wrap {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 24px 55px rgba(30, 31, 27, 0.13);
+}
+
+.hero-image-wrap img {
+  width: 100%;
+  aspect-ratio: 1.48;
+  object-fit: cover;
+}
+
+.hero-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.hero-caption span {
+  color: #71766b;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.hero-caption strong {
+  font-size: 0.78rem;
+}
+
+@media (max-width: 1120px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.7rem, 6vw, 4rem);
+  }
+
+  .hero-description {
+    max-width: 520px;
+    margin-block: 1rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .hero-section {
+    min-height: unset;
+    padding: clamp(1.25rem, 6vw, 2rem);
+  }
+
+  .hero-image-wrap img {
+    aspect-ratio: 1.6;
+  }
+}
