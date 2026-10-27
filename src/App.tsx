@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { BrandCarousel } from './components/BrandCarousel'
 import { CategoryStrip } from './components/CategoryStrip'
-import { CheckoutPage, PurchaseConfirmation } from './components/CheckoutPage'
+import { CheckoutPage, StorePaymentResult } from './components/CheckoutPage'
 import { FeatureHighlights } from './components/FeatureHighlights'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -11,20 +11,62 @@ import { ProductGrid } from './components/ProductGrid'
 import { ShoppingCart } from './components/ShoppingCart'
 import { brandProducts, categories } from './data/storeData'
 import type { BrandName, CartItem, Product } from './types/store'
+import { getStorePaymentStatus } from './utils/paymentsApi'
 
-type StoreView = 'store' | 'cart' | 'checkout' | 'confirmation'
+type StoreView = 'store' | 'cart' | 'checkout' | 'payment-result'
 
 function App() {
+  const [paymentReturnId] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('payment_id') || params.get('collection_id')
+  })
   const [selectedBrand, setSelectedBrand] = useState<BrandName>('Adidas')
   const [searchQuery, setSearchQuery] = useState('')
   const [cartItems, setCartItems] = useState<CartItem[]>([])
-  const [view, setView] = useState<StoreView>('store')
+  const [view, setView] = useState<StoreView>(() => paymentReturnId ? 'payment-result' : 'store')
+  const [paymentResult, setPaymentResult] = useState<{
+    loading: boolean
+    status?: string
+    paymentId?: string
+    error?: string
+  }>(() => paymentReturnId ? { loading: true, paymentId: paymentReturnId } : { loading: false })
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0)
   const shipping = subtotal >= 29900 || subtotal === 0 ? 0 : 1990
   const visibleProducts = searchQuery.trim()
     ? Object.values(brandProducts).flat()
     : brandProducts[selectedBrand]
+
+  useEffect(() => {
+    if (!paymentReturnId) return
+
+    const controller = new AbortController()
+
+    if (!/^\d{1,20}$/.test(paymentReturnId)) {
+      Promise.resolve().then(() => {
+        if (controller.signal.aborted) return
+        setPaymentResult({
+          loading: false,
+          paymentId: paymentReturnId,
+          error: 'O identificador retornado pelo Mercado Pago é inválido.',
+        })
+      })
+      return () => controller.abort()
+    }
+
+    getStorePaymentStatus(paymentReturnId, controller.signal)
+      .then(({ status }) => setPaymentResult({ loading: false, status, paymentId: paymentReturnId }))
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        setPaymentResult({
+          loading: false,
+          paymentId: paymentReturnId,
+          error: error instanceof Error ? error.message : 'Erro ao verificar o pagamento.',
+        })
+      })
+
+    return () => controller.abort()
+  }, [paymentReturnId])
 
   function addToCart(product: Product, size: number) {
     setCartItems((currentItems) => {
@@ -58,6 +100,7 @@ function App() {
   }
 
   function returnToStore() {
+    window.history.replaceState({}, '', window.location.pathname)
     setView('store')
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -105,7 +148,6 @@ function App() {
           subtotal={subtotal}
           shipping={shipping}
           onBackToCart={() => setView('cart')}
-          onConfirmDemoOrder={() => setView('confirmation')}
         />
       )}
       {view === 'checkout' && cartItems.length === 0 && (
@@ -119,8 +161,11 @@ function App() {
           onCheckout={() => setView('checkout')}
         />
       )}
-      {view === 'confirmation' && (
-        <PurchaseConfirmation onContinueShopping={returnToStore} onReturnToCart={() => setView('cart')} />
+      {view === 'payment-result' && (
+        <StorePaymentResult
+          {...paymentResult}
+          onContinueShopping={returnToStore}
+        />
       )}
       <Footer />
     </div>

@@ -23,4 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .github
+
+# Payment server secrets
+/payments-server/.env
+/payments-server/.env.*
+!/payments-server/.env.example
 payments-server

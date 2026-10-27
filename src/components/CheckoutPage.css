@@ -1,3 +1,66 @@
+.pix-panel {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  max-width: 460px;
+  margin: 2rem auto;
+  padding: clamp(1.4rem, 5vw, 2.2rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fff;
+  text-align: center;
+}
+
+.pix-panel h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.04em;
+}
+
+.pix-eyebrow {
+  margin: 0;
+  color: #6c8f2d;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+}
+
+.pix-amount {
+  font-size: 1.5rem;
+}
+
+.pix-qr {
+  width: 230px;
+  height: 230px;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+}
+
+.pix-help,
+.pix-waiting {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.pix-code {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  color: var(--ink);
+  font-family: monospace;
+  font-size: 0.7rem;
+  resize: none;
+}
+
+.pix-panel .purchase-primary-button {
+  width: 100%;
+  margin: 0;
+}
+
 .checkout-hint {
   font-size: 0.8rem;
   font-weight: 500;
@@ -160,15 +223,27 @@
   font-size: 0.68rem;
 }
 
-.checkout-demo-notice {
+.checkout-payment-notice,
+.checkout-error {
   margin: 0;
   padding: 0.9rem 1rem;
-  border: 1px solid #ead4a6;
+  border: 1px solid #d5e0c1;
   border-radius: 0.55rem;
-  background: #fff9eb;
-  color: #765d2a;
+  background: #f7faef;
+  color: #485e2b;
   font-size: 0.74rem;
   line-height: 1.55;
+}
+
+.checkout-error {
+  border-color: #efc3bd;
+  background: #fff4f2;
+  color: #a52c20;
+}
+
+.checkout-actions .purchase-primary-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 .checkout-actions {
@@ -235,7 +310,7 @@
   margin-top: 0.7rem;
 }
 
-.demo-confirmation {
+.store-payment-result {
   max-width: 640px;
   margin: 3rem auto;
   padding: clamp(1.5rem, 5vw, 3rem);
@@ -245,19 +320,24 @@
   text-align: center;
 }
 
-.demo-confirmation-icon {
+.store-payment-result-icon {
   display: inline-grid;
   place-items: center;
   width: 3.4rem;
   height: 3.4rem;
   border-radius: 50%;
-  background: #edf4dd;
-  color: #638e1b;
+  background: #fff2df;
+  color: #9c6213;
   font-size: 1.4rem;
   font-weight: 900;
 }
 
-.demo-confirmation > p:first-of-type {
+.store-payment-result-icon.is-approved {
+  background: #edf4dd;
+  color: #638e1b;
+}
+
+.store-payment-result > p:first-of-type {
   margin: 1rem 0 0.4rem;
   color: #6c8f2d;
   font-size: 0.68rem;
@@ -265,13 +345,13 @@
   letter-spacing: 0.14em;
 }
 
-.demo-confirmation h1 {
+.store-payment-result h1 {
   margin: 0;
   font-size: clamp(1.7rem, 5vw, 2.4rem);
   letter-spacing: -0.05em;
 }
 
-.demo-confirmation-copy {
+.store-payment-result-copy {
   max-width: 480px;
   margin: 1rem auto 0;
   color: var(--ink-soft);
@@ -279,15 +359,21 @@
   line-height: 1.7;
 }
 
-.demo-confirmation-actions {
+.store-payment-id {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.store-payment-result-actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.25rem;
   margin-top: 1.4rem;
 }
 
-.demo-confirmation-actions .purchase-primary-button {
+.store-payment-result-actions .purchase-primary-button {
   width: auto;
   margin: 0;
 }
@@ -325,7 +411,7 @@
     width: 100%;
   }
 
-  .demo-confirmation-actions {
-    flex-direction: column;
+  .store-payment-result-actions .purchase-primary-button {
+    width: 100%;
   }
 }
