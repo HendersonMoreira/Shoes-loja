@@ -3,9 +3,10 @@ import './CategoryStrip.css'
 
 type CategoryStripProps = {
   categories: Category[]
+  onCategoryClick: (category: string) => void
 }
 
-export function CategoryStrip({ categories }: CategoryStripProps) {
+export function CategoryStrip({ categories, onCategoryClick }: CategoryStripProps) {
   return (
     <aside className="category-strip" id="destaques">
       <div className="category-sidebar-heading">
@@ -14,7 +15,10 @@ export function CategoryStrip({ categories }: CategoryStripProps) {
       </div>
       <nav className="category-list" aria-label="Categorias de produtos">
         {categories.map((category) => (
-          <a key={category.name} className="category-link" href="#produtos">
+          <a key={category.name} className="category-link" href="#produtos" onClick={(event) => {
+            event.preventDefault()
+            onCategoryClick(category.name)
+          }}>
             <span>
               <strong>{category.name}</strong>
               <small>{category.description}</small>

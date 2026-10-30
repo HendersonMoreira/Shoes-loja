@@ -1,11 +1,18 @@
 import './Footer.css'
 
-export function Footer() {
+type FooterProps = {
+  onHomeClick: () => void
+}
+
+export function Footer({ onHomeClick }: FooterProps) {
   return (
     <footer className="site-footer" id="rodape">
       <div className="footer-main">
         <div className="footer-brand">
-          <a href="#topo" className="footer-wordmark" aria-label="Tiago Shoes — voltar ao início">
+          <a href="#topo" className="footer-wordmark" aria-label="Tiago Shoes — voltar ao início" onClick={(event) => {
+            event.preventDefault()
+            onHomeClick()
+          }}>
             <span className="footer-symbol" aria-hidden="true">T</span>
             <span>TIAGO <strong>SHOES</strong></span>
           </a>
@@ -23,7 +30,10 @@ export function Footer() {
           <h2>Informações</h2>
           <a href="#beneficios">Benefícios da loja</a>
           <a href="/creditos-imagens.html">Créditos das fotos</a>
-          <a href="#topo">Voltar ao início</a>
+          <a href="#topo" onClick={(event) => {
+            event.preventDefault()
+            onHomeClick()
+          }}>Voltar ao início</a>
         </nav>
       </div>
 

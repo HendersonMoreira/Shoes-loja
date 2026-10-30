@@ -402,6 +402,12 @@
     padding: 1rem;
   }
 
+  .checkout-field input,
+  .checkout-field select {
+    min-height: 2.85rem;
+    font-size: 16px;
+  }
+
   .checkout-actions {
     align-items: stretch;
     flex-direction: column-reverse;

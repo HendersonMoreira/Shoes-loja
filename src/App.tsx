@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { BrandCarousel } from './components/BrandCarousel'
+import { CatalogPage } from './components/CatalogPage'
 import { CategoryStrip } from './components/CategoryStrip'
 import { CheckoutPage, StorePaymentResult } from './components/CheckoutPage'
 import { FeatureHighlights } from './components/FeatureHighlights'
@@ -13,7 +14,7 @@ import { brandProducts, categories } from './data/storeData'
 import type { BrandName, CartItem, Product } from './types/store'
 import { getStorePaymentStatus } from './utils/paymentsApi'
 
-type StoreView = 'store' | 'cart' | 'checkout' | 'payment-result'
+type StoreView = 'store' | 'catalog' | 'cart' | 'checkout' | 'payment-result'
 
 function App() {
   const [paymentReturnId] = useState(() => {
@@ -22,6 +23,7 @@ function App() {
   })
   const [selectedBrand, setSelectedBrand] = useState<BrandName>('Adidas')
   const [searchQuery, setSearchQuery] = useState('')
+  const [catalogCategory, setCatalogCategory] = useState('Todas')
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [view, setView] = useState<StoreView>(() => paymentReturnId ? 'payment-result' : 'store')
   const [paymentResult, setPaymentResult] = useState<{
@@ -105,17 +107,28 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function openCatalog(category = 'Todas') {
+    setCatalogCategory(category)
+    setView('catalog')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <div className="storefront">
       <Header
-        onSearchChange={setSearchQuery}
+        onSearchChange={(query) => {
+          setSearchQuery(query)
+          setView('catalog')
+        }}
         onCartOpen={() => setView('cart')}
+        onHomeClick={returnToStore}
+        onCatalogClick={() => openCatalog()}
         cartCount={cartCount}
       />
       {view === 'store' && (
         <main>
           <div className="store-layout">
-            <CategoryStrip categories={categories} />
+            <CategoryStrip categories={categories} onCategoryClick={openCatalog} />
             <div className="store-content">
               <HeroSection />
               <FeatureHighlights />
@@ -130,6 +143,14 @@ function App() {
             </div>
           </div>
         </main>
+      )}
+      {view === 'catalog' && (
+        <CatalogPage
+          products={Object.values(brandProducts).flat()}
+          searchQuery={searchQuery}
+          initialCategory={catalogCategory}
+          onAddToCart={addToCart}
+        />
       )}
       {view === 'cart' && (
         <ShoppingCart
@@ -167,7 +188,7 @@ function App() {
           onContinueShopping={returnToStore}
         />
       )}
-      <Footer />
+      <Footer onHomeClick={returnToStore} />
     </div>
   )
 }

@@ -3,10 +3,12 @@ import './Header.css'
 type HeaderProps = {
   onSearchChange: (query: string) => void
   onCartOpen: () => void
+  onHomeClick: () => void
+  onCatalogClick: () => void
   cartCount: number
 }
 
-export function Header({ onSearchChange, onCartOpen, cartCount }: HeaderProps) {
+export function Header({ onSearchChange, onCartOpen, onHomeClick, onCatalogClick, cartCount }: HeaderProps) {
   return (
     <header className="site-header">
       <div className="utility-bar">
@@ -18,7 +20,10 @@ export function Header({ onSearchChange, onCartOpen, cartCount }: HeaderProps) {
       </div>
 
       <div className="main-bar">
-        <a href="#topo" className="brand-mark" aria-label="Tiago Shoes — início">
+        <a href="#topo" className="brand-mark" aria-label="Tiago Shoes — início" onClick={(event) => {
+          event.preventDefault()
+          onHomeClick()
+        }}>
           <span className="brand-symbol" aria-hidden="true">T</span>
           <span className="brand-wordmark">TIAGO<span>SHOES</span></span>
         </a>
@@ -44,10 +49,22 @@ export function Header({ onSearchChange, onCartOpen, cartCount }: HeaderProps) {
 
       <nav className="primary-nav" aria-label="Navegação principal">
         <div className="primary-nav__inner">
-          <a href="#topo">Início</a>
-          <a href="#destaques">Categorias</a>
-          <a href="#produtos">Lançamentos</a>
-          <a href="#produtos">Ofertas</a>
+          <a href="#topo" onClick={(event) => {
+            event.preventDefault()
+            onHomeClick()
+          }}>Início</a>
+          <a href="#produtos" onClick={(event) => {
+            event.preventDefault()
+            onCatalogClick()
+          }}>Catálogo</a>
+          <a href="#produtos" onClick={(event) => {
+            event.preventDefault()
+            onCatalogClick()
+          }}>Lançamentos</a>
+          <a href="#produtos" onClick={(event) => {
+            event.preventDefault()
+            onCatalogClick()
+          }}>Ofertas</a>
           <a href="#beneficios">Sobre a Tiago Shoes</a>
         </div>
       </nav>

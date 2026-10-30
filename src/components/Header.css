@@ -300,6 +300,11 @@
   }
 
   .primary-nav a {
+    min-height: 44px;
     font-size: 0.72rem;
+  }
+
+  .search-box input {
+    font-size: 16px;
   }
 }

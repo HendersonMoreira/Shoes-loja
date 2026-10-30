@@ -9,8 +9,7 @@ import nikeTerminatorImage from '../assets/products/nike-terminator.jpg'
 export const categories: Category[] = [
   { name: 'Corrida', description: 'Modelos leves para treinos e rua' },
   { name: 'Casual', description: 'Modelos confortáveis para usar todo dia' },
-  { name: 'Social', description: 'Linha elegante para ocasioes especiais' },
-  { name: 'Infantil', description: 'Opções confortáveis para os pequenos' },
+  { name: 'Lifestyle', description: 'Estilo urbano para o dia a dia' },
 ]
 
 export const brandProducts: Record<BrandName, Product[]> = {

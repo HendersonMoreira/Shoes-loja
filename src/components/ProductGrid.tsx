@@ -7,6 +7,8 @@ type ProductGridProps = {
   products: Product[]
   searchQuery: string
   onAddToCart: (product: Product, size: number) => void
+  eyebrow?: string
+  title?: string
 }
 
 const accentClassMap: Record<Product['accent'], string> = {
@@ -16,7 +18,13 @@ const accentClassMap: Record<Product['accent'], string> = {
   white: 'accent-white',
 }
 
-export function ProductGrid({ products, searchQuery, onAddToCart }: ProductGridProps) {
+export function ProductGrid({
+  products,
+  searchQuery,
+  onAddToCart,
+  eyebrow = 'Escolhas da semana',
+  title = 'Modelos em destaque',
+}: ProductGridProps) {
   const [selectedSizes, setSelectedSizes] = useState<Record<number, number>>({})
   const normalizedQuery = searchQuery.trim().toLocaleLowerCase('pt-BR')
   const filteredProducts = products.filter((product) =>
@@ -27,8 +35,8 @@ export function ProductGrid({ products, searchQuery, onAddToCart }: ProductGridP
     <section className="product-section" id="produtos">
       <div className="section-heading">
         <div>
-          <p>Escolhas da semana</p>
-          <h2>Modelos em destaque</h2>
+          <p>{eyebrow}</p>
+          <h2>{title}</h2>
         </div>
         <span className="product-count">{filteredProducts.length} modelos</span>
       </div>
