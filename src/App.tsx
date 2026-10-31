@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { AboutPage } from './components/AboutPage'
 import { BrandCarousel } from './components/BrandCarousel'
 import { CatalogPage } from './components/CatalogPage'
 import { CategoryStrip } from './components/CategoryStrip'
 import { CheckoutPage, StorePaymentResult } from './components/CheckoutPage'
 import { FeatureHighlights } from './components/FeatureHighlights'
 import { Footer } from './components/Footer'
+import { HelpPage } from './components/HelpPage'
 import { Header } from './components/Header'
 import { HeroSection } from './components/HeroSection'
 import { ProductGrid } from './components/ProductGrid'
@@ -14,7 +16,8 @@ import { brandProducts, categories } from './data/storeData'
 import type { BrandName, CartItem, Product } from './types/store'
 import { getStorePaymentStatus } from './utils/paymentsApi'
 
-type StoreView = 'store' | 'catalog' | 'cart' | 'checkout' | 'payment-result'
+type StoreView = 'store' | 'catalog' | 'cart' | 'checkout' | 'payment-result' | 'help' | 'about'
+type HelpReturnView = Exclude<StoreView, 'help'>
 
 function App() {
   const [paymentReturnId] = useState(() => {
@@ -26,6 +29,7 @@ function App() {
   const [catalogCategory, setCatalogCategory] = useState('Todas')
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [view, setView] = useState<StoreView>(() => paymentReturnId ? 'payment-result' : 'store')
+  const [helpReturnView, setHelpReturnView] = useState<HelpReturnView>('store')
   const [paymentResult, setPaymentResult] = useState<{
     loading: boolean
     status?: string
@@ -70,6 +74,29 @@ function App() {
     return () => controller.abort()
   }, [paymentReturnId])
 
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) return
+
+    const revealElements = document.querySelectorAll<HTMLElement>(
+      'main section, main article, main aside, main .purchase-heading, main .about-heading, main .about-intro-card',
+    )
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-scroll-visible', entry.isIntersecting)
+        })
+      },
+      { threshold: 0.12 },
+    )
+
+    revealElements.forEach((element) => {
+      element.classList.add('scroll-reveal')
+      observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [view])
+
   function addToCart(product: Product, size: number) {
     setCartItems((currentItems) => {
       const existing = currentItems.find((item) => item.product.id === product.id && item.size === size)
@@ -113,6 +140,20 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function openHelpPage() {
+    if (view !== 'help') setHelpReturnView(view)
+    setView('help')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function openAboutPage() {
+    setView('about')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const keepCheckoutMounted = cartItems.length > 0
+    && (view === 'checkout' || (view === 'help' && helpReturnView === 'checkout'))
+
   return (
     <div className="storefront">
       <Header
@@ -123,6 +164,8 @@ function App() {
         onCartOpen={() => setView('cart')}
         onHomeClick={returnToStore}
         onCatalogClick={() => openCatalog()}
+        onHelpClick={openHelpPage}
+        onAboutClick={openAboutPage}
         cartCount={cartCount}
       />
       {view === 'store' && (
@@ -163,13 +206,16 @@ function App() {
           onCheckout={() => setView('checkout')}
         />
       )}
-      {view === 'checkout' && cartItems.length > 0 && (
-        <CheckoutPage
-          items={cartItems}
-          subtotal={subtotal}
-          shipping={shipping}
-          onBackToCart={() => setView('cart')}
-        />
+      {keepCheckoutMounted && (
+        <div hidden={view !== 'checkout'}>
+          <CheckoutPage
+            items={cartItems}
+            subtotal={subtotal}
+            shipping={shipping}
+            onBackToCart={() => setView('cart')}
+            onHelpClick={openHelpPage}
+          />
+        </div>
       )}
       {view === 'checkout' && cartItems.length === 0 && (
         <ShoppingCart
@@ -186,9 +232,23 @@ function App() {
         <StorePaymentResult
           {...paymentResult}
           onContinueShopping={returnToStore}
+          onHelpClick={openHelpPage}
         />
       )}
-      <Footer onHomeClick={returnToStore} />
+      {view === 'help' && (
+        <HelpPage onBack={() => setView(helpReturnView)} />
+      )}
+      {view === 'about' && (
+        <AboutPage
+          onBack={returnToStore}
+          onHelpClick={openHelpPage}
+        />
+      )}
+      <Footer
+        onHomeClick={returnToStore}
+        onHelpClick={openHelpPage}
+        onAboutClick={openAboutPage}
+      />
     </div>
   )
 }

@@ -2,9 +2,11 @@ import './Footer.css'
 
 type FooterProps = {
   onHomeClick: () => void
+  onHelpClick: () => void
+  onAboutClick: () => void
 }
 
-export function Footer({ onHomeClick }: FooterProps) {
+export function Footer({ onHomeClick, onHelpClick, onAboutClick }: FooterProps) {
   return (
     <footer className="site-footer" id="rodape">
       <div className="footer-main">
@@ -28,7 +30,14 @@ export function Footer({ onHomeClick }: FooterProps) {
 
         <nav className="footer-column" aria-label="Informações">
           <h2>Informações</h2>
-          <a href="#beneficios">Benefícios da loja</a>
+          <a href="#sobre" onClick={(event) => {
+            event.preventDefault()
+            onAboutClick()
+          }}>Sobre a loja</a>
+          <a href="#ajuda" onClick={(event) => {
+            event.preventDefault()
+            onHelpClick()
+          }}>Ajuda e dúvidas</a>
           <a href="/creditos-imagens.html">Créditos das fotos</a>
           <a href="#topo" onClick={(event) => {
             event.preventDefault()

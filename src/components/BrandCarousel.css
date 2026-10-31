@@ -45,11 +45,15 @@
   color: var(--ink);
   font-size: 0.84rem;
   font-weight: 750;
-  transition: border-color 160ms ease, background 160ms ease;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.brand-option:hover {
-  border-color: rgba(23, 25, 22, 0.45);
+@media (hover: hover) and (pointer: fine) {
+  .brand-option:hover {
+    transform: translateY(-2px);
+    border-color: rgba(23, 25, 22, 0.45);
+    box-shadow: 0 6px 14px rgba(23, 25, 22, 0.1);
+  }
 }
 
 .brand-option.is-active {

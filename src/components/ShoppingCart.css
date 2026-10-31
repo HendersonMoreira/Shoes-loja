@@ -188,11 +188,15 @@
   color: #fff;
   font-size: 0.82rem;
   font-weight: 750;
-  transition: background 160ms ease;
+  transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
-.purchase-primary-button:hover {
-  background: #353a30;
+@media (hover: hover) and (pointer: fine) {
+  .purchase-primary-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #353a30;
+    box-shadow: 0 8px 18px rgba(23, 25, 22, 0.16);
+  }
 }
 
 .purchase-primary-button span {

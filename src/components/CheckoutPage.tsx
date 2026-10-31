@@ -22,6 +22,7 @@ type CheckoutPageProps = {
   subtotal: number
   shipping: number
   onBackToCart: () => void
+  onHelpClick: () => void
 }
 
 export function CheckoutPage({
@@ -29,6 +30,7 @@ export function CheckoutPage({
   subtotal,
   shipping,
   onBackToCart,
+  onHelpClick,
 }: CheckoutPageProps) {
   const [paymentMethod, setPaymentMethod] = useState<StorePaymentMethod>('pix')
   const [cep, setCep] = useState('')
@@ -175,7 +177,12 @@ export function CheckoutPage({
               <p className="pix-waiting" aria-live="polite">Aguardando pagamento... a tela atualiza sozinha.</p>
             </>
           )}
-          {paymentError && <p className="checkout-error" role="alert">{paymentError}</p>}
+          {paymentError && (
+            <div className="checkout-error" role="alert">
+              <span>{paymentError}</span>
+              <button type="button" className="help-inline-link" onClick={onHelpClick}>Precisa de ajuda?</button>
+            </div>
+          )}
           <button type="button" className="purchase-back-link" onClick={onBackToCart}>← Voltar à sacola</button>
         </section>
       </main>
@@ -244,8 +251,16 @@ export function CheckoutPage({
                   onChange={(event) => handleCepChange(event.target.value)}
                 />
                 {cepStatus === 'loading' && <small className="checkout-hint">Buscando endereço...</small>}
-                {cepStatus === 'notFound' && <small className="checkout-hint checkout-hint--error">CEP não encontrado. Preencha manualmente.</small>}
-                {cepStatus === 'error' && <small className="checkout-hint checkout-hint--error">Não foi possível consultar o CEP. Preencha manualmente.</small>}
+                {cepStatus === 'notFound' && (
+                  <small className="checkout-hint checkout-hint--error">
+                    CEP não encontrado. Preencha manualmente. <button type="button" className="help-inline-link" onClick={onHelpClick}>Ver ajuda</button>
+                  </small>
+                )}
+                {cepStatus === 'error' && (
+                  <small className="checkout-hint checkout-hint--error">
+                    Não foi possível consultar o CEP. Preencha manualmente. <button type="button" className="help-inline-link" onClick={onHelpClick}>Ver ajuda</button>
+                  </small>
+                )}
                 {cepStatus === 'success' && <small className="checkout-hint checkout-hint--ok">Endereço preenchido automaticamente.</small>}
               </label>
               <label className="checkout-field checkout-field--wide">
@@ -308,7 +323,12 @@ export function CheckoutPage({
             </div>
           </section>
 
-          {paymentError && <p className="checkout-error" role="alert">{paymentError}</p>}
+          {paymentError && (
+            <div className="checkout-error" role="alert">
+              <span>{paymentError}</span>
+              <button type="button" className="help-inline-link" onClick={onHelpClick}>Precisa de ajuda?</button>
+            </div>
+          )}
           <p className="checkout-payment-notice">
             {paymentMethod === 'pix'
               ? 'Ao continuar, geramos um QR Code Pix aqui mesmo na loja.'
@@ -361,6 +381,7 @@ type StorePaymentResultProps = {
   paymentId?: string
   error?: string
   onContinueShopping: () => void
+  onHelpClick: () => void
 }
 
 export function StorePaymentResult({
@@ -369,6 +390,7 @@ export function StorePaymentResult({
   paymentId,
   error,
   onContinueShopping,
+  onHelpClick,
 }: StorePaymentResultProps) {
   const normalizedStatus = status?.toUpperCase()
   const isApproved = normalizedStatus === 'APPROVED' || normalizedStatus === 'AUTHORIZED'
@@ -401,6 +423,11 @@ export function StorePaymentResult({
         <h1>{title}</h1>
         <p className="store-payment-result-copy">{description}</p>
         {paymentId && <small className="store-payment-id">Pagamento: {paymentId}</small>}
+        {error && (
+          <button type="button" className="help-inline-link" onClick={onHelpClick}>
+            Ver orientações de ajuda
+          </button>
+        )}
         <div className="store-payment-result-actions">
           <button type="button" className="purchase-primary-button" onClick={onContinueShopping}>
             Voltar para a loja

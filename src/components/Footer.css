@@ -63,12 +63,18 @@
 .footer-column a {
   color: #b3b7ac;
   font-size: 0.78rem;
-  transition: color 160ms ease;
+  transition: color 160ms ease, transform 160ms ease;
 }
 
-.footer-column a:hover,
-.footer-bottom a:hover {
-  color: var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .footer-column a:hover {
+    transform: translateX(3px);
+    color: var(--accent);
+  }
+
+  .footer-bottom a:hover {
+    color: var(--accent);
+  }
 }
 
 .footer-bottom {

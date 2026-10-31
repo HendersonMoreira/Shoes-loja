@@ -87,3 +87,17 @@ export async function getStorePaymentStatus(paymentId: string, signal?: AbortSig
     { signal },
   )
 }
+
+export async function sendSupportMessage(payload: {
+  name: string
+  email: string
+  subject: string
+  message: string
+  website: string
+}) {
+  return requestJson<{ success: true; messageId: string }>('/api/store/support', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+}

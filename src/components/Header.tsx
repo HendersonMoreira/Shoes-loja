@@ -5,16 +5,29 @@ type HeaderProps = {
   onCartOpen: () => void
   onHomeClick: () => void
   onCatalogClick: () => void
+  onHelpClick: () => void
+  onAboutClick: () => void
   cartCount: number
 }
 
-export function Header({ onSearchChange, onCartOpen, onHomeClick, onCatalogClick, cartCount }: HeaderProps) {
+export function Header({
+  onSearchChange,
+  onCartOpen,
+  onHomeClick,
+  onCatalogClick,
+  onHelpClick,
+  onAboutClick,
+  cartCount,
+}: HeaderProps) {
   return (
     <header className="site-header">
       <div className="utility-bar">
         <p>Frete grátis nas compras acima de R$ 299</p>
         <div className="utility-links">
-          <a href="#beneficios">Atendimento ao cliente</a>
+          <a href="#ajuda" onClick={(event) => {
+            event.preventDefault()
+            onHelpClick()
+          }}>Ajuda</a>
           <a href="#produtos">Novidades</a>
         </div>
       </div>
@@ -65,7 +78,14 @@ export function Header({ onSearchChange, onCartOpen, onHomeClick, onCatalogClick
             event.preventDefault()
             onCatalogClick()
           }}>Ofertas</a>
-          <a href="#beneficios">Sobre a Tiago Shoes</a>
+          <a href="#ajuda" onClick={(event) => {
+            event.preventDefault()
+            onHelpClick()
+          }}>Ajuda</a>
+          <a href="#sobre" onClick={(event) => {
+            event.preventDefault()
+            onAboutClick()
+          }}>Sobre a Tiago Shoes</a>
         </div>
       </nav>
     </header>

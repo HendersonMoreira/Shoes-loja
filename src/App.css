@@ -2,6 +2,23 @@
   min-height: 100vh;
 }
 
+main .scroll-reveal {
+  opacity: 0;
+  translate: 0 1.5rem;
+  visibility: hidden;
+  transition:
+    opacity 520ms ease,
+    translate 520ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    visibility 0s linear 520ms;
+}
+
+main .scroll-reveal.is-scroll-visible {
+  opacity: 1;
+  translate: 0 0;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
 main {
   padding-bottom: 5rem;
 }
@@ -20,6 +37,16 @@ main {
   min-width: 0;
   flex-direction: column;
   gap: clamp(2rem, 4vw, 3.25rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main .scroll-reveal,
+  main .scroll-reveal.is-scroll-visible {
+    opacity: 1;
+    translate: none;
+    visibility: visible;
+    transition: none;
+  }
 }
 
 @media (max-width: 900px) {

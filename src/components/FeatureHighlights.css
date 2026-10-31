@@ -17,6 +17,7 @@
   border-radius: 0.55rem;
   background: #fff;
   border: 1px solid var(--line);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .feature-icon {
@@ -52,6 +53,22 @@
   color: #6f736a;
   font-size: 0.65rem;
   line-height: 1.4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(117, 155, 44, 0.32);
+    box-shadow: 0 9px 22px rgba(23, 25, 22, 0.07);
+  }
+
+  .feature-card:hover .feature-icon {
+    transform: scale(1.08);
+  }
+}
+
+.feature-icon {
+  transition: transform 180ms ease, background 180ms ease;
 }
 
 @media (max-width: 900px) {

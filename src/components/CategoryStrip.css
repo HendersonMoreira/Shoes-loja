@@ -35,11 +35,18 @@
   gap: 0.6rem;
   padding: 0.85rem 1rem;
   border-bottom: 1px solid rgba(23, 25, 22, 0.07);
-  transition: background 160ms ease;
+  transition: background 160ms ease, transform 160ms ease;
 }
 
-.category-link:hover {
-  background: #f4f7eb;
+@media (hover: hover) and (pointer: fine) {
+  .category-link:hover {
+    transform: translateX(3px);
+    background: #f4f7eb;
+  }
+
+  .category-link:hover .category-arrow {
+    transform: translateX(2px);
+  }
 }
 
 .category-link strong,
@@ -61,6 +68,7 @@
 .category-arrow {
   color: #7aa420;
   font-size: 1.4rem;
+  transition: transform 160ms ease;
 }
 
 .category-help {
