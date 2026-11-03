@@ -133,6 +133,14 @@ export function CheckoutPage({
             name: payload.customer.name,
             email: payload.customer.email,
             cpf: String(formData.get('cpf') || ''),
+            phone: payload.customer.phone,
+            postalCode: payload.customer.postalCode,
+            street: payload.customer.street,
+            streetNumber: payload.customer.streetNumber,
+            neighborhood: payload.customer.neighborhood,
+            complement: payload.customer.complement,
+            city: payload.customer.city,
+            state: payload.customer.state,
           },
         })
         setPixStatus(pix.status)
@@ -210,7 +218,7 @@ export function CheckoutPage({
             <div className="checkout-fields">
               <label className="checkout-field checkout-field--wide">
                 Nome completo
-                <input name="name" autoComplete="name" required placeholder="Como podemos te chamar?" />
+                <input name="name" autoComplete="name" required maxLength={100} placeholder="Como podemos te chamar?" />
               </label>
               <label className="checkout-field">
                 E-mail
@@ -224,7 +232,7 @@ export function CheckoutPage({
               )}
               <label className="checkout-field">
                 Celular
-                <input name="phone" type="tel" autoComplete="tel" inputMode="tel" required placeholder="(00) 00000-0000" />
+                <input name="phone" type="tel" autoComplete="tel" inputMode="tel" required maxLength={20} placeholder="(00) 00000-0000" />
               </label>
             </div>
           </section>
@@ -265,23 +273,23 @@ export function CheckoutPage({
               </label>
               <label className="checkout-field checkout-field--wide">
                 Endereço
-                <input name="street" autoComplete="street-address" required placeholder="Rua, avenida..." value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
+                <input name="street" autoComplete="street-address" required maxLength={150} placeholder="Rua, avenida..." value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })} />
               </label>
               <label className="checkout-field">
                 Número
-                <input ref={numberRef} name="number" required placeholder="Nº" />
+                <input ref={numberRef} name="number" required maxLength={20} placeholder="Nº" />
               </label>
               <label className="checkout-field">
                 Bairro
-                <input name="neighborhood" placeholder="Seu bairro" value={address.neighborhood} onChange={(e) => setAddress({ ...address, neighborhood: e.target.value })} />
+                <input name="neighborhood" required maxLength={100} placeholder="Seu bairro" value={address.neighborhood} onChange={(e) => setAddress({ ...address, neighborhood: e.target.value })} />
               </label>
               <label className="checkout-field">
                 Complemento <span>(opcional)</span>
-                <input name="complement" autoComplete="address-line2" placeholder="Apto, bloco..." />
+                <input name="complement" autoComplete="address-line2" maxLength={100} placeholder="Apto, bloco..." />
               </label>
               <label className="checkout-field">
                 Cidade
-                <input name="city" autoComplete="address-level2" required placeholder="Sua cidade" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                <input name="city" autoComplete="address-level2" required maxLength={100} placeholder="Sua cidade" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
               </label>
               <label className="checkout-field">
                 Estado
@@ -332,7 +340,8 @@ export function CheckoutPage({
           <p className="checkout-payment-notice">
             {paymentMethod === 'pix'
               ? 'Ao continuar, geramos um QR Code Pix aqui mesmo na loja.'
-              : 'Você será redirecionado ao ambiente seguro do Mercado Pago para concluir o pagamento. Os dados do cartão não são digitados nem armazenados nesta loja.'}
+              : 'Você será redirecionado ao ambiente seguro do Mercado Pago para concluir o pagamento. Os dados do cartão não são digitados nem armazenados nesta loja.'}{' '}
+            Usaremos o endereço para entregar o pedido. Quando o aviso automático estiver ativo, seu nome, produtos, valor pago e endereço serão enviados ao WhatsApp da loja; o CPF não será incluído nessa mensagem.
           </p>
           <div className="checkout-actions">
             <button type="button" className="purchase-back-link" onClick={onBackToCart}>← Voltar à sacola</button>

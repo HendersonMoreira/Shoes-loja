@@ -72,7 +72,7 @@ export type StorePixPayment = {
 
 export async function createStorePix(payload: {
   items: StoreCheckoutPayload['items']
-  customer: { name: string; email: string; cpf: string }
+  customer: StoreCheckoutPayload['customer'] & { cpf: string }
 }) {
   return requestJson<{ success: true } & StorePixPayment>('/api/store/pix', {
     method: 'POST',

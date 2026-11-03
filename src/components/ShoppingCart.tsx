@@ -85,11 +85,6 @@ export function ShoppingCart({
               <span>Entrega</span>
               <strong>{shipping === 0 ? 'Grátis' : formatPrice(shipping)}</strong>
             </div>
-            <p className="shipping-note">
-              {shipping === 0
-                ? 'Você ganhou frete grátis!'
-                : `Frete grátis em compras acima de ${formatPrice(29900)}.`}
-            </p>
             <div className="summary-total">
               <span>Total</span>
               <strong>{formatPrice(subtotal + shipping)}</strong>

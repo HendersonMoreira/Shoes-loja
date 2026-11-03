@@ -38,7 +38,7 @@ function App() {
   }>(() => paymentReturnId ? { loading: true, paymentId: paymentReturnId } : { loading: false })
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
   const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0)
-  const shipping = subtotal >= 29900 || subtotal === 0 ? 0 : 1990
+  const shipping = 0
   const visibleProducts = searchQuery.trim()
     ? Object.values(brandProducts).flat()
     : brandProducts[selectedBrand]
